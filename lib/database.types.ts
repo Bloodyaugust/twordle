@@ -1,5 +1,5 @@
 yarn run v1.22.19
-$ /home/grichey/code/twordle/node_modules/.bin/supabase gen types typescript --linked
+$ /Users/grichey/Code/twordle/node_modules/.bin/supabase gen types typescript --linked
 export type Json =
   | string
   | number
@@ -36,7 +36,81 @@ export interface Database {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      game: {
+        Row: {
+          created_at: string
+          created_by: string
+          ended_at: string | null
+          game_id: string
+          game_state: Json
+          started_at: string | null
+          updated_at: string
+          winner: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          ended_at?: string | null
+          game_id?: string
+          game_state?: Json
+          started_at?: string | null
+          updated_at?: string
+          winner?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          ended_at?: string | null
+          game_id?: string
+          game_state?: Json
+          started_at?: string | null
+          updated_at?: string
+          winner?: string | null
+        }
+      }
+      player: {
+        Row: {
+          game_id: string
+          joined_at: string
+          left_at: string | null
+          player_id: string
+        }
+        Insert: {
+          game_id: string
+          joined_at?: string
+          left_at?: string | null
+          player_id: string
+        }
+        Update: {
+          game_id?: string
+          joined_at?: string
+          left_at?: string | null
+          player_id?: string
+        }
+      }
+      profile: {
+        Row: {
+          code: number
+          created_at: string
+          name: string | null
+          profile_id: string
+          updated_at: string
+        }
+        Insert: {
+          code?: number
+          created_at?: string
+          name?: string | null
+          profile_id: string
+          updated_at?: string
+        }
+        Update: {
+          code?: number
+          created_at?: string
+          name?: string | null
+          profile_id?: string
+          updated_at?: string
+        }
+      }
     }
     Views: {
       [_ in never]: never
@@ -211,4 +285,4 @@ export interface Database {
     }
   }
 }
-Done in 1.24s.
+Done in 1.83s.

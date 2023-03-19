@@ -14,18 +14,32 @@ export default function Welcome() {
     });
 
     reloadUser();
-  }, []);
+  }, [reloadUser, supabase]);
+
+  const onLogout = useCallback(async () => {
+    const { error } = await supabase.auth.signOut();
+    reloadUser();
+  }, [reloadUser, supabase]);
 
   return (
     <div className="col-span-4 self-center justify-self-center rounded-sm border-2 border-solid p-4">
       <h2 className="text-center">Welcome to Twordle!</h2>
       {!user && (
-        <div>
+        <div className="flex flex-col gap-1">
           <input className="dark:text-black" id="user-email" type="email" ref={emailRef} />
-          <button onClick={onLogin}>Log In</button>
+          <button className="rounded-sm dark:bg-slate-600 dark:hover:bg-slate-500" onClick={onLogin}>
+            Log In
+          </button>
         </div>
       )}
-      {user && <span>You are signed in as {user.email}</span>}
+      {user && (
+        <div className="flex flex-col gap-1">
+          <span>You are signed in as {user.email}</span>
+          <button className="rounded-sm dark:bg-slate-600 dark:hover:bg-slate-500" onClick={onLogout}>
+            Log Out
+          </button>
+        </div>
+      )}
     </div>
   );
 }

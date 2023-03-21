@@ -36,6 +36,7 @@ export interface Database {
           game_id: string;
           game_state: Json;
           started_at: string | null;
+          type: string;
           updated_at: string;
           winner: string | null;
         };
@@ -46,6 +47,7 @@ export interface Database {
           game_id?: string;
           game_state?: Json;
           started_at?: string | null;
+          type?: string;
           updated_at?: string;
           winner?: string | null;
         };
@@ -56,6 +58,7 @@ export interface Database {
           game_id?: string;
           game_state?: Json;
           started_at?: string | null;
+          type?: string;
           updated_at?: string;
           winner?: string | null;
         };

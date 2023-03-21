@@ -1,11 +1,14 @@
 import React from 'react';
 import './App.css';
+import { User } from './user/User';
 import Welcome from './welcome/Welcome';
 
 function App() {
   return (
-    <div className="App dark:bg-slate-800 dark:text-white p-6 grid grid-cols-4">
-      <Welcome />
+    <div className="App grid grid-cols-4 p-6 dark:bg-slate-800 dark:text-white">
+      <User>
+        <Welcome />
+      </User>
     </div>
   );
 }

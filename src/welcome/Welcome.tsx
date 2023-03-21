@@ -48,7 +48,6 @@ export default function Welcome() {
         <div className="flex flex-col items-center gap-4">
           <span>You are signed in as {user.email}</span>
           <Button onClick={onLogout}>Log Out</Button>
-          <Profile />
           <Games />
         </div>
       )}

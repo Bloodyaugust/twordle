@@ -5,7 +5,7 @@ import Welcome from './welcome/Welcome';
 
 function App() {
   return (
-    <div className="App grid grid-cols-4 p-6 dark:bg-slate-800 dark:text-white">
+    <div className="App grid grid-cols-4 overflow-x-scroll p-6 dark:bg-slate-800 dark:text-white">
       <User>
         <Welcome />
       </User>

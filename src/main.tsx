@@ -6,7 +6,7 @@ import App from './App';
 import './index.css';
 import { Supabase } from './supabase/Supabase';
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>

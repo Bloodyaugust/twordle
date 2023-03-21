@@ -1,14 +1,15 @@
 import { Dialog } from '@headlessui/react';
 import React, { useCallback, useContext, useRef, useState } from 'react';
+import Button from '../components/Button';
 import { supabaseContext } from '../supabase/Supabase';
 
 export default function Welcome() {
   const { user, supabase, reloadUser } = useContext(supabaseContext);
   const emailRef = useRef<HTMLInputElement>(null);
-  const [dialogOpen, setDialogOpen] = useState<boolean>(true);
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
   const onLogin = useCallback(async () => {
-    const { data, error } = await supabase.auth.signInWithOtp({
+    const { error } = await supabase.auth.signInWithOtp({
       email: emailRef?.current?.value || '',
       options: {
         emailRedirectTo: window.location.href,
@@ -38,26 +39,20 @@ export default function Welcome() {
       {!user && (
         <div className="flex flex-col items-center gap-4">
           <input className="dark:text-black" id="user-email" type="email" ref={emailRef} />
-          <button className="w-fit rounded-sm p-2 dark:bg-slate-600 dark:hover:bg-slate-500" onClick={onLogin}>
-            Log In
-          </button>
+          <Button onClick={onLogin}>Log In</Button>
         </div>
       )}
       {user && (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col items-center gap-4">
           <span>You are signed in as {user.email}</span>
-          <button className="rounded-sm p-2 dark:bg-slate-600 dark:hover:bg-slate-500" onClick={onLogout}>
-            Log Out
-          </button>
+          <Button onClick={onLogout}>Log Out</Button>
         </div>
       )}
       <Dialog className="relative z-10" open={dialogOpen} onClose={onCloseDialog}>
         <Dialog.Panel className="fixed inset-0 left-1/2 top-1/2 flex max-h-fit max-w-fit -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center gap-4 rounded-sm p-4 dark:bg-slate-900 dark:text-white">
           <Dialog.Title>Login Email Sent!</Dialog.Title>
           <Dialog.Description>Check your email for a magic login link.</Dialog.Description>
-          <button className="rounded-sm p-2 dark:bg-slate-600 dark:hover:bg-slate-500" onClick={onCloseDialog}>
-            Okay
-          </button>
+          <Button onClick={onCloseDialog}>Okay</Button>
         </Dialog.Panel>
       </Dialog>
     </div>

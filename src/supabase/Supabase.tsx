@@ -1,5 +1,6 @@
 import React, { createContext, ReactNode, useEffect, useState } from 'react';
 import { createClient, SupabaseClient, User } from '@supabase/supabase-js';
+import { Database } from '../../lib/database.types';
 
 type ContextValue = {
   supabase: SupabaseClient;
@@ -7,7 +8,10 @@ type ContextValue = {
   reloadUser: () => void;
 };
 
-const supabase = createClient('https://bkclaoukhxadbbtdsqec.supabase.co', import.meta.env.VITE_SUPABASE_KEY);
+export const supabase = createClient<Database>(
+  'https://bkclaoukhxadbbtdsqec.supabase.co',
+  import.meta.env.VITE_SUPABASE_KEY
+);
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 export const supabaseContext = createContext<ContextValue>({ supabase, user: null, reloadUser: () => {} });
 

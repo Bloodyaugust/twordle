@@ -4,6 +4,7 @@
     'nav content content content'
     'nav content content content'
     'nav content content content';
+  grid-template-rows: 2rem 1fr 1fr 1fr;
   height: 100%;
   width: 100%;
 }

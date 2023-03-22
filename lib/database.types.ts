@@ -63,6 +63,29 @@ export interface Database {
           winner?: string | null;
         };
       };
+      game_event: {
+        Row: {
+          created_at: string;
+          created_by: string | null;
+          game_id: string;
+          id: number;
+          payload: Json;
+        };
+        Insert: {
+          created_at?: string;
+          created_by?: string | null;
+          game_id: string;
+          id?: number;
+          payload?: Json;
+        };
+        Update: {
+          created_at?: string;
+          created_by?: string | null;
+          game_id?: string;
+          id?: number;
+          payload?: Json;
+        };
+      };
       player: {
         Row: {
           game_id: string;

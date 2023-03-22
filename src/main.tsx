@@ -4,6 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './App';
+import Game from './Game/Game';
 import Games from './Games/Games';
 import './index.css';
 import { Supabase } from './supabase/Supabase';
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
       {
         path: 'games',
         element: <Games />,
+      },
+      {
+        path: 'game/:gameId',
+        element: <Game />,
       },
     ],
   },

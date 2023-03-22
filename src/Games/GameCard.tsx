@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import React, { useCallback, useContext, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Database } from '../../lib/database.types';
 import { mutationCreatePlayer, queryGetPlayers } from '../api/player';
 import { queryGetProfiles } from '../api/profile';
@@ -23,6 +24,7 @@ function getGameStatus(game: Database['public']['Tables']['game']['Row']): strin
 }
 
 export default function GameCard({ game }: Props) {
+  const navigate = useNavigate();
   const { data: players } = useQuery(queryGetPlayers);
   const { data: profiles } = useQuery(queryGetProfiles);
   const { mutate: createPlayer } = useMutation(mutationCreatePlayer());
@@ -51,6 +53,10 @@ export default function GameCard({ game }: Props) {
     },
     [game]
   );
+
+  const onPlayClick = useCallback(() => {
+    navigate(`/game/${game.game_id}`);
+  }, [navigate, game]);
 
   return (
     <div className="flex flex-col gap-2 rounded-sm border-2 border-solid p-2">
@@ -81,7 +87,7 @@ export default function GameCard({ game }: Props) {
           </Button>
         )}
         {gamePlayers?.find(player => player.player_id === user?.profile_id) && gamePlayers.length > 1 && (
-          <Button>Play</Button>
+          <Button onClick={onPlayClick}>Play</Button>
         )}
       </div>
       {showInviteList && (

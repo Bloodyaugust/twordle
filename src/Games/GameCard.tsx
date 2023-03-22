@@ -53,7 +53,7 @@ export default function GameCard({ game }: Props) {
   );
 
   return (
-    <div className="flex w-48 flex-col gap-2 rounded-sm border-2 border-solid p-2">
+    <div className="flex flex-col gap-2 rounded-sm border-2 border-solid p-2">
       <span>Type: {game.type}</span>
       <span>Host: {profiles?.find(profile => profile.profile_id === game.created_by)?.name}</span>
       <span

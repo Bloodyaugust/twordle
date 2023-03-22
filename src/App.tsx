@@ -1,13 +1,29 @@
 import React from 'react';
+import { NavLink, Outlet } from 'react-router-dom';
 import './App.css';
 import { User } from './user/User';
-import Welcome from './welcome/Welcome';
 
 function App() {
   return (
-    <div className="App grid grid-cols-4 overflow-x-scroll p-6 dark:bg-slate-800 dark:text-white">
+    <div className="App grid grid-cols-4 gap-2 p-6 dark:bg-slate-800 dark:text-white">
       <User>
-        <Welcome />
+        <div className="header text-center text-xl font-bold">
+          <h1>Twordle</h1>
+        </div>
+        <nav className="nav flex flex-col gap-4">
+          <NavLink className={({ isActive }) => `underline ${isActive && 'text-violet-600'}`} to="">
+            Home
+          </NavLink>
+          <NavLink className={({ isActive }) => `underline ${isActive && 'text-violet-600'}`} to="games">
+            Games
+          </NavLink>
+          <NavLink className={({ isActive }) => `underline ${isActive && 'text-violet-600'}`} to="profile">
+            Profile
+          </NavLink>
+        </nav>
+        <div className="content overflow-x-scroll">
+          <Outlet />
+        </div>
       </User>
     </div>
   );

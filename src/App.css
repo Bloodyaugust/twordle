@@ -1,4 +1,21 @@
 .App {
+  grid-template-areas:
+    'header header header header'
+    'nav content content content'
+    'nav content content content'
+    'nav content content content';
   height: 100%;
   width: 100%;
+}
+
+.content {
+  grid-area: content;
+}
+
+.header {
+  grid-area: header;
+}
+
+.nav {
+  grid-area: nav;
 }

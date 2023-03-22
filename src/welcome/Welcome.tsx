@@ -2,7 +2,6 @@ import { Dialog } from '@headlessui/react';
 import React, { useCallback, useContext, useRef, useState } from 'react';
 import Button from '../components/Button';
 import Games from '../Games/Games';
-import Profile from '../profile/Profile';
 import { supabaseContext } from '../supabase/Supabase';
 
 export default function Welcome() {

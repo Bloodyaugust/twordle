@@ -5,6 +5,7 @@ import { Database } from '../../lib/database.types';
 import { mutationCreatePlayer, queryGetPlayers } from '../api/player';
 import { queryGetProfiles } from '../api/profile';
 import Button from '../components/Button';
+import { GameState } from '../game-logic/default-game-reducer';
 import { userContext } from '../user/User';
 
 type Props = {
@@ -12,8 +13,25 @@ type Props = {
 };
 
 function getGameStatus(game: Database['public']['Tables']['game']['Row']): string {
-  if (!game.started_at) {
+  if (!game.game_state) {
     return 'Pending';
+  }
+
+  let gameState: GameState;
+  try {
+    gameState = JSON.parse(game.game_state as any) as GameState;
+  } catch {
+    return 'Pending';
+  }
+
+  console.log(
+    gameState.players,
+    Object.keys(gameState.targetWords),
+    Object.keys(gameState.targetWords).length < gameState.players.length,
+    game.game_id
+  );
+  if (Object.keys(gameState.targetWords).length < gameState.players.length) {
+    return 'Waiting For Player Picks';
   }
 
   if (!game.ended_at) {
@@ -65,7 +83,7 @@ export default function GameCard({ game }: Props) {
       <span
         className={`${status === 'Pending' && 'text-yellow-500'} ${status === 'In Progress' && 'text-green-500'} ${
           status === 'Ended' && 'text-red-500'
-        }`}>
+        } ${status === 'Waiting For Player Picks' && 'text-green-500'}`}>
         {status}
       </span>
       <span>Other Players:</span>

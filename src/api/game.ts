@@ -45,3 +45,28 @@ export function mutationCreateGame(): mutationCreateGameReturnType {
     },
   };
 }
+
+export async function updateGame(game: Database['public']['Tables']['game']['Row']) {
+  const { error } = await supabase
+    .from('game')
+    .update({ ...game, updated_at: new Date().toISOString() })
+    .eq('game_id', game.game_id);
+
+  if (error) {
+    throw error;
+  }
+}
+
+type mutationUpdateGameReturnType = {
+  mutationFn: (game: Database['public']['Tables']['game']['Row']) => Promise<void>;
+  onSuccess: () => void;
+};
+
+export function mutationUpdateGame(): mutationUpdateGameReturnType {
+  return {
+    mutationFn: updateGame,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['games'] });
+    },
+  };
+}

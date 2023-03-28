@@ -1,6 +1,7 @@
 import { Dialog } from '@headlessui/react';
 import React, { useCallback, useContext, useRef, useState } from 'react';
 import Button from '../components/Button';
+import Input from '../components/Input';
 import Games from '../Games/Games';
 import { supabaseContext } from '../supabase/Supabase';
 
@@ -39,7 +40,7 @@ export default function Welcome() {
       <h2 className="mb-4 text-center">Welcome to Twordle!</h2>
       {!user && (
         <div className="flex flex-col items-center gap-4">
-          <input className="dark:text-black" id="user-email" type="email" ref={emailRef} />
+          <Input id="login-email" ref={emailRef} onEnterUp={onLogin} />
           <Button onClick={onLogin}>Log In</Button>
         </div>
       )}

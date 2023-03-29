@@ -35,6 +35,19 @@ jobs:
     needs: test
 
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 19.8.1
+
+      - name: Install
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install
+
       - name: Build
         uses: borales/actions-yarn@v4
         with:
@@ -46,6 +59,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 19.8.1
+
+      - name: Install
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install
+
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:

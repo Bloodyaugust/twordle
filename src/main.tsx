@@ -7,6 +7,7 @@ import App from './App';
 import Game from './Game/Game';
 import Games from './Games/Games';
 import './index.css';
+import Profile from './profile/Profile';
 import { Supabase } from './supabase/Supabase';
 import Welcome from './welcome/Welcome';
 
@@ -25,8 +26,8 @@ const router = createBrowserRouter([
         element: <Games />,
       },
       {
-        path: 'game/:gameId',
-        element: <Game />,
+        path: 'profile',
+        element: <Profile />,
       },
     ],
   },

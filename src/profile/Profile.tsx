@@ -1,30 +1,17 @@
-import React from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { queryGetProfiles } from '../api/profile';
+import React, { useContext } from 'react';
+import { userContext } from '../user/User';
 
 export default function Profile() {
-  const { isLoading, error, data } = useQuery(queryGetProfiles);
+  const { user } = useContext(userContext);
 
-  if (isLoading) {
+  if (!user) {
     return <span>Loading...</span>;
-  }
-
-  if (error) {
-    return <span>There was an error.</span>;
   }
 
   return (
     <div>
-      <span>These are all the profiles</span>
-      <div className="flex flex-col gap-4">
-        {data?.map(profile => (
-          <div key={profile.profile_id}>
-            <span>
-              {profile.name}-{profile.code}
-            </span>
-          </div>
-        ))}
-      </div>
+      <h2>{user.name}</h2>
+      <span>{user.profile_id}</span>
     </div>
   );
 }

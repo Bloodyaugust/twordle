@@ -1,10 +1,11 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import React, { useCallback, useContext, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Database } from '../../lib/database.types';
 import { mutationCreatePlayer, queryGetPlayers } from '../api/player';
 import { queryGetProfiles } from '../api/profile';
 import Button from '../components/Button';
+import SingleChoice from '../components/SingleChoice';
 import { GameState } from '../game-logic/default-game-reducer';
 import { userContext } from '../user/User';
 
@@ -24,12 +25,6 @@ function getGameStatus(game: Database['public']['Tables']['game']['Row']): strin
     return 'Pending';
   }
 
-  console.log(
-    gameState.players,
-    Object.keys(gameState.targetWords),
-    Object.keys(gameState.targetWords).length < gameState.players.length,
-    game.game_id
-  );
   if (Object.keys(gameState.targetWords).length < gameState.players.length) {
     return 'Waiting For Player Picks';
   }
@@ -47,7 +42,6 @@ export default function GameCard({ game }: Props) {
   const { data: profiles } = useQuery(queryGetProfiles);
   const { mutate: createPlayer } = useMutation(mutationCreatePlayer());
   const { user } = useContext(userContext);
-  const [showInviteList, setShowInviteList] = useState<boolean>(false);
   const status = useMemo(() => getGameStatus(game), [game]);
   const gamePlayers = useMemo(() => players?.filter(player => player.game_id === game.game_id), [players, game]);
   const invitableProfiles = useMemo(
@@ -57,10 +51,6 @@ export default function GameCard({ game }: Props) {
       ) || [],
     [profiles, gamePlayers]
   );
-
-  const onInviteClick = useCallback(() => {
-    setShowInviteList(!showInviteList);
-  }, [showInviteList]);
 
   const onProfileInviteClick = useCallback(
     (profileId: string) => {
@@ -99,24 +89,22 @@ export default function GameCard({ game }: Props) {
         ))}
       </div>
       <div className="flex gap-2">
-        {game.created_by === user?.profile_id && (
-          <Button disabled={invitableProfiles.length === 0} onClick={onInviteClick}>
-            Invite
-          </Button>
+        {game.created_by === user?.profile_id && invitableProfiles && (
+          <SingleChoice
+            disabled={!invitableProfiles.length}
+            name="opponent"
+            onSelect={option => {
+              if (option) {
+                onProfileInviteClick(option.id);
+              }
+            }}
+            options={invitableProfiles.map(profile => ({ value: profile.name || 'Unnamed', id: profile.profile_id }))}
+          />
         )}
         {gamePlayers?.find(player => player.player_id === user?.profile_id) && gamePlayers.length > 1 && (
           <Button onClick={onPlayClick}>Play</Button>
         )}
       </div>
-      {showInviteList && (
-        <div>
-          {invitableProfiles?.map(profile => (
-            <Button key={profile.profile_id} onClick={() => onProfileInviteClick(profile.profile_id)}>
-              {profile.name}
-            </Button>
-          ))}
-        </div>
-      )}
     </div>
   );
 }

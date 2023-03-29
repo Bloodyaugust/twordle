@@ -91,7 +91,7 @@ export default function GameCard({ game }: Props) {
       <div className="flex gap-2">
         {game.created_by === user?.profile_id && invitableProfiles && (
           <SingleChoice
-            disabled={!invitableProfiles.length}
+            disabled={!invitableProfiles.length || (gamePlayers || []).length > 1}
             name="opponent"
             onSelect={option => {
               if (option) {

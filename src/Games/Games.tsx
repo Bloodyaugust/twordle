@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import React, { useCallback, useContext, useEffect } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo } from 'react';
 import { mutationCreateGame, queryGetGames } from '../api/game';
 import { mutationCreatePlayer, queryGetPlayers } from '../api/player';
 import Button from '../components/Button';
@@ -12,6 +12,14 @@ export default function Games() {
   const { user } = useContext(userContext);
   const { mutate } = useMutation(mutationCreateGame());
   const { mutate: createPlayer } = useMutation(mutationCreatePlayer());
+
+  const userGames = useMemo(() => {
+    return data?.filter(
+      game =>
+        game.created_by === user?.profile_id ||
+        players?.find(player => player.game_id === game.game_id && player.player_id === user?.profile_id)
+    );
+  }, [user, data, players]);
 
   const onCreateGameClick = useCallback(() => {
     if (user) {
@@ -47,7 +55,7 @@ export default function Games() {
   return (
     <div className="flex flex-col items-center gap-4">
       <div className="grid w-full grid-cols-3 gap-4">
-        {data?.map(game => (
+        {userGames?.map(game => (
           <GameCard game={game} key={game.game_id} />
         ))}
       </div>

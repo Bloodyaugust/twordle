@@ -3,6 +3,7 @@ import React, { useContext, useMemo } from 'react';
 import { queryGetProfiles } from '../api/profile';
 import { GameState } from '../game-logic/default-game-reducer';
 import { userContext } from '../user/User';
+import './GameGrid.css';
 
 type Props = {
   game?: GameState;
@@ -60,14 +61,14 @@ export default function GameGrid({ game, focusPlayer }: Props) {
   }
 
   return (
-    <div className="flex gap-4">
+    <div className="flex flex-col flex-col-reverse gap-4 md:flex-row">
       {sortedPlayers.map((player, playerIndex) => (
         <div key={player} className={`flex flex-col gap-2 ${playerIndex > 0 && 'scale-90'}`}>
           <span>
             {profiles.find(profile => profile.profile_id === player)?.name}
             {player === user?.profile_id ? ' (You)' : ''}
           </span>
-          <div key={player} className="grid grid-cols-5 gap-2">
+          <div key={player} className="game-grid-inner grid grid-flow-row-dense grid-cols-5 gap-2">
             {correctedPlayerGuesses[player].map((guess, guessIndex) =>
               guess.split('').map((char, charIndex) => (
                 <span

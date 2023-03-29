@@ -54,7 +54,7 @@ export default function Games() {
 
   return (
     <div className="flex flex-col items-center gap-4">
-      <div className="grid w-full grid-cols-3 gap-4">
+      <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 ">
         {userGames?.map(game => (
           <GameCard game={game} key={game.game_id} />
         ))}

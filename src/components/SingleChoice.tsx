@@ -55,12 +55,12 @@ const SingleChoice = forwardRef(function SingleChoice({ defaultValue, disabled, 
   );
 
   return (
-    <div className="flex w-32 flex-col gap-1 bg-slate-700">
+    <div className="flex w-32 flex-col gap-1 bg-slate-500 dark:bg-slate-700">
       <span
         onClick={onValueClicked}
         className={`flex justify-between p-2 hover:cursor-pointer ${
-          !disabled && 'bg-slate-600 text-white hover:bg-slate-300'
-        } ${disabled && 'bg-slate-900'}`}>
+          !disabled && 'text-white hover:bg-slate-600 dark:bg-slate-600 dark:hover:bg-slate-300'
+        } ${disabled && 'dark:bg-slate-900'}`}>
         <span>{value?.value || name}</span>
         {open && <span>&and;</span>}
         {!open && <span>&or;</span>}
@@ -72,7 +72,7 @@ const SingleChoice = forwardRef(function SingleChoice({ defaultValue, disabled, 
             onClick={() => {
               onOptionClicked(option);
             }}
-            className="bg-slate-600 p-2 text-white hover:cursor-pointer hover:bg-slate-300"
+            className="p-2 text-white hover:cursor-pointer hover:bg-slate-600 dark:bg-slate-600 dark:hover:bg-slate-300"
             key={option.id}>
             {option.value}
           </span>

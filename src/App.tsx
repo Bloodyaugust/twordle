@@ -5,7 +5,7 @@ import { User } from './user/User';
 
 function App() {
   return (
-    <div className="App grid grid-cols-4 gap-2 p-6 dark:bg-slate-800 dark:text-white">
+    <div className="App grid grid-cols-4 gap-2 bg-slate-300 p-6 dark:bg-slate-800 dark:text-white">
       <User>
         <div className="header text-center text-xl font-bold">
           <h1>Twordle</h1>

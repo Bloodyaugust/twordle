@@ -68,7 +68,7 @@ export default function GameGrid({ game, focusPlayer }: Props) {
             {profiles.find(profile => profile.profile_id === player)?.name}
             {player === user?.profile_id ? ' (You)' : ''}
           </span>
-          <div key={player} className="game-grid-inner grid grid-flow-row-dense grid-cols-5 gap-2">
+          <div key={player} className="game-grid-inner grid grid-flow-row-dense gap-2">
             {correctedPlayerGuesses[player].map((guess, guessIndex) =>
               guess.split('').map((char, charIndex) => (
                 <span

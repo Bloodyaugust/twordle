@@ -18,6 +18,7 @@ import {
 import { userContext } from '../user/User';
 import { WORDS } from '../../lib/dictionary';
 import GameGrid from './GameGrid';
+import { supabase } from '../supabase/Supabase';
 
 export default function Game() {
   const { gameId } = useParams();
@@ -37,7 +38,7 @@ export default function Game() {
     [gamePlayers, user]
   );
 
-  const { data: gameEvents } = useQuery(queryGetGameEventsForGame(gameId || ''));
+  const { data: gameEvents, refetch: refetchEvents } = useQuery(queryGetGameEventsForGame(gameId || ''));
   const sortedGameEvents = useMemo(
     () => gameEvents?.sort((a, b) => new Date(a.created_at).valueOf() - new Date(b.created_at).valueOf()) || [],
     [gameEvents]
@@ -117,6 +118,15 @@ export default function Game() {
       });
     }
   }, [game, gameState, user]);
+
+  useEffect(() => {
+    supabase
+      .channel(`game-events-${gameId}`)
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'game_event' }, () => {
+        refetchEvents();
+      })
+      .subscribe();
+  }, []);
 
   if (!game || !gameState || !user || !profiles) {
     return <span>Loading...</span>;

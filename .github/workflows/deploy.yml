@@ -55,6 +55,9 @@ jobs:
         with:
           cmd: build
 
+      - name: Copy Index to 404
+        run: cp dist/index.html dist/404.html
+
       - name: Upload build
         uses: actions/upload-artifact@v3
         with:

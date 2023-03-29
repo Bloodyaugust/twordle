@@ -50,6 +50,8 @@ jobs:
 
       - name: Build
         uses: borales/actions-yarn@v4
+        env:
+          VITE_SUPABASE_KEY: ${{ secrets.VITE_SUPABASE_KEY }}
         with:
           cmd: build
 

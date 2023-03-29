@@ -1,0 +1,52 @@
+name: Test, Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 19.8.1
+
+      - name: Install
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install
+
+      - name: Test
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: test
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Build
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: build
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist

@@ -38,15 +38,19 @@ export default function Game() {
   );
 
   const { data: gameEvents } = useQuery(queryGetGameEventsForGame(gameId || ''));
+  const sortedGameEvents = useMemo(
+    () => gameEvents?.sort((a, b) => new Date(a.created_at).valueOf() - new Date(b.created_at).valueOf()) || [],
+    [gameEvents]
+  );
   const { mutate: doUpdateGame } = useMutation(mutationUpdateGame());
   const { mutate: doCreateGameEvent } = useMutation(mutationCreateGameEvent());
   const gameState = useMemo(() => {
     return defaultGameReducer(
-      (gameEvents?.map(gameEvent => gameEvent.payload) || []) as (gameEventPayloadWordPicked &
+      (sortedGameEvents.map(gameEvent => gameEvent.payload) || []) as (gameEventPayloadWordPicked &
         gameEventPayloadWordGuessed)[],
       gamePlayers?.map(player => player.player_id) || []
     );
-  }, [game, gameEvents, gamePlayers]);
+  }, [game, sortedGameEvents, gamePlayers]);
 
   const userPicking = useMemo(
     () => opponent && gameState.winState === GAME_WINNER_STATES.PENDING && !gameState.targetWords[opponent.player_id],

@@ -16,6 +16,7 @@ import {
   gameEventPayloadWordPicked,
 } from '../game-logic/game-data';
 import { userContext } from '../user/User';
+import { WORDS } from '../../lib/dictionary';
 import GameGrid from './GameGrid';
 
 export default function Game() {
@@ -66,6 +67,8 @@ export default function Game() {
     if (user && gameId && opponent && opponentWordInputRef.current) {
       if (opponentWordInputRef.current.value.length !== 5) {
         alert('Words must be 5 letters long');
+      } else if (WORDS.indexOf(opponentWordInputRef.current.value) === -1) {
+        alert('Word not found in dictionary');
       } else {
         doCreateGameEvent({
           user,
@@ -84,6 +87,8 @@ export default function Game() {
     if (user && gameId && opponent && guessWordInputRef.current) {
       if (guessWordInputRef.current.value.length !== 5) {
         alert('Words must be 5 letters long');
+      } else if (WORDS.indexOf(guessWordInputRef.current.value) === -1) {
+        alert('Word not found in dictionary');
       } else {
         const guessValue: string = guessWordInputRef.current.value;
         guessWordInputRef.current.value = '';

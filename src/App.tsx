@@ -11,7 +11,7 @@ function App() {
           <h1>Twordle</h1>
         </div>
         <nav className="nav flex flex-col gap-4">
-          <NavLink className={({ isActive }) => `underline ${isActive && 'text-violet-600'}`} to="">
+          <NavLink className={({ isActive }) => `underline ${isActive && 'text-violet-600'}`} to="" end>
             Home
           </NavLink>
           <NavLink className={({ isActive }) => `underline ${isActive && 'text-violet-600'}`} to="games">

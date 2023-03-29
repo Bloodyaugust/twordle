@@ -14,7 +14,7 @@ import Welcome from './welcome/Welcome';
 export const queryClient = new QueryClient();
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: '/twordle',
     element: <App />,
     children: [
       {
@@ -28,6 +28,10 @@ const router = createBrowserRouter([
       {
         path: 'profile',
         element: <Profile />,
+      },
+      {
+        path: 'game/:gameId',
+        element: <Game />,
       },
     ],
   },

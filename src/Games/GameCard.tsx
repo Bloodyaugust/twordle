@@ -63,7 +63,7 @@ export default function GameCard({ game }: Props) {
   );
 
   const onPlayClick = useCallback(() => {
-    navigate(`/game/${game.game_id}`);
+    navigate(`/twordle/game/${game.game_id}`);
   }, [navigate, game]);
 
   return (

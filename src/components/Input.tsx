@@ -7,15 +7,16 @@ type Props = {
   id: string;
   maxLength?: number;
   onEnterUp?: () => void;
+  uppercase?: boolean;
 };
 
 const Input = forwardRef(function Input(
-  { disabled, placeholder, type, id, maxLength, onEnterUp }: Props,
+  { disabled, placeholder, type, id, maxLength, onEnterUp, uppercase }: Props,
   ref: Ref<HTMLInputElement>
 ) {
   return (
     <input
-      className="p-2 text-black"
+      className={`p-2 text-black ${uppercase && 'uppercase'}`}
       disabled={disabled}
       placeholder={placeholder}
       ref={ref}

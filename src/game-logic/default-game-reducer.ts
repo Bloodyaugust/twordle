@@ -26,11 +26,18 @@ export const GAME_WINNER_STATES_STRINGS = {
   [GAME_WINNER_STATES.TIE]: 'Tied',
 };
 
+export enum LETTER_STATES {
+  CORRECT,
+  INCORRECT,
+  MISPLACED,
+}
+
 export type GameState = {
   players: string[];
   targetWords: Record<string, string | undefined>;
   finished: Record<string, GAME_FINISH_STATES | undefined>;
   guesses: Record<string, string[] | undefined>;
+  letterStates: Record<string, Record<string, LETTER_STATES>>;
   winState: GAME_WINNER_STATES;
   winner?: string;
 };
@@ -44,6 +51,7 @@ export default function defaultGameReducer(
     targetWords: {},
     finished: {},
     guesses: {},
+    letterStates: {},
     winState: GAME_WINNER_STATES.PENDING,
   };
 
@@ -55,9 +63,26 @@ export default function defaultGameReducer(
     if (payload.type === GAME_EVENT_PAYLOAD_TYPES.WORD_GUESSED) {
       if (!state.guesses[payload.createdBy]?.length) {
         state.guesses[payload.createdBy] = [];
+        state.letterStates[payload.createdBy] = {};
       }
 
       state.guesses[payload.createdBy]?.push(payload.word);
+
+      payload.word.split('').forEach((character, characterIndex) => {
+        if ((state.targetWords[payload.createdBy] || '')[characterIndex] === character) {
+          state.letterStates[payload.createdBy][character] = LETTER_STATES.CORRECT;
+        } else if (
+          state.letterStates[payload.createdBy][character] !== LETTER_STATES.CORRECT &&
+          state.targetWords[payload.createdBy]?.includes(character)
+        ) {
+          state.letterStates[payload.createdBy][character] = LETTER_STATES.MISPLACED;
+        } else if (
+          state.letterStates[payload.createdBy][character] !== LETTER_STATES.CORRECT &&
+          state.letterStates[payload.createdBy][character] !== LETTER_STATES.MISPLACED
+        ) {
+          state.letterStates[payload.createdBy][character] = LETTER_STATES.INCORRECT;
+        }
+      });
     }
 
     players.forEach(player => {

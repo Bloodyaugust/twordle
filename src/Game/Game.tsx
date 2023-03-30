@@ -19,6 +19,7 @@ import { userContext } from '../user/User';
 import { WORDS } from '../../lib/dictionary';
 import GameGrid from './GameGrid';
 import { supabase } from '../supabase/Supabase';
+import Keyboard from '../Keyboard/Keyboard';
 
 export default function Game() {
   const { gameId } = useParams();
@@ -72,7 +73,7 @@ export default function Game() {
     if (user && gameId && opponent && opponentWordInputRef.current) {
       if (opponentWordInputRef.current.value.length !== 5) {
         alert('Words must be 5 letters long');
-      } else if (WORDS.indexOf(opponentWordInputRef.current.value) === -1) {
+      } else if (WORDS.indexOf(opponentWordInputRef.current.value.toLowerCase()) === -1) {
         alert('Word not found in dictionary');
       } else {
         doCreateGameEvent({
@@ -81,7 +82,7 @@ export default function Game() {
           payload: createGameEventPayloadWordPicked(
             user.profile_id,
             opponent.player_id,
-            opponentWordInputRef.current.value
+            opponentWordInputRef.current.value.toLowerCase()
           ),
         });
       }
@@ -92,10 +93,10 @@ export default function Game() {
     if (user && gameId && opponent && guessWordInputRef.current) {
       if (guessWordInputRef.current.value.length !== 5) {
         alert('Words must be 5 letters long');
-      } else if (WORDS.indexOf(guessWordInputRef.current.value) === -1) {
+      } else if (WORDS.indexOf(guessWordInputRef.current.value.toLowerCase()) === -1) {
         alert('Word not found in dictionary');
       } else {
-        const guessValue: string = guessWordInputRef.current.value;
+        const guessValue: string = guessWordInputRef.current.value.toLowerCase();
         guessWordInputRef.current.value = '';
         doCreateGameEvent({
           user,
@@ -105,6 +106,16 @@ export default function Game() {
       }
     }
   }, [user, gameId, opponent, guessWordInputRef]);
+
+  const onKeyboardClick = useCallback(
+    (character: string) => {
+      if (guessWordInputRef.current && guessWordInputRef.current.value.length < 5) {
+        guessWordInputRef.current.value = guessWordInputRef.current.value + character;
+        guessWordInputRef.current.focus();
+      }
+    },
+    [guessWordInputRef]
+  );
 
   useEffect(() => {
     if (game && user && game.created_by === user.profile_id && JSON.stringify(gameState) !== game.game_state) {
@@ -142,6 +153,7 @@ export default function Game() {
           ref={opponentWordInputRef}
           maxLength={5}
           onEnterUp={onPickOpponentWord}
+          uppercase
         />
         <Button onClick={onPickOpponentWord}>Pick Word</Button>
       </div>
@@ -169,7 +181,9 @@ export default function Game() {
               ref={guessWordInputRef}
               maxLength={5}
               onEnterUp={onGuess}
+              uppercase
             />
+            <Keyboard gameState={gameState} onClick={onKeyboardClick} />
             <Button onClick={onGuess}>Guess</Button>
           </>
         )}

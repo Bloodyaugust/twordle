@@ -46,5 +46,9 @@ describe('Default Game Reducer', () => {
     expect(gameState.guesses['456']).toEqual(['speck', 'speck', 'speck', 'speck', 'speck', 'speck']);
     expect(gameState.winState).toEqual(GAME_WINNER_STATES.PLAYER);
     expect(gameState.finished).toEqual({ '123': GAME_FINISH_STATES.WON, '456': GAME_FINISH_STATES.LOST });
+    expect(gameState.letterStates).toEqual({
+      '123': { p: 1, i: 1, c: 1, k: 1, s: 0, a: 0, r: 0, o: 0, e: 0 },
+      '456': { s: 1, p: 2, e: 1, c: 1, k: 1 },
+    });
   });
 });

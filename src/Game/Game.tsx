@@ -145,7 +145,7 @@ export default function Game() {
 
   if (!gameOver && userPicking) {
     return (
-      <div className="flex gap-2">
+      <div className="flex flex-col gap-2 md:flex-row">
         <span>You are picking a word for your opponent:</span>
         <Input
           id="opponent-word-pick"

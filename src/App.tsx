@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
-import { FaGamepad, FaHome, FaUser } from 'react-icons/fa';
+import { FaGamepad, FaHome, FaQuestion, FaUser } from 'react-icons/fa';
 import './App.css';
 import { User } from './user/User';
 
@@ -30,6 +30,12 @@ function App() {
             to="profile">
             <FaUser />
             <span className="hidden md:inline">Profile</span>
+          </NavLink>
+          <NavLink
+            className={({ isActive }) => `flex items-center gap-2 underline ${isActive && 'text-violet-600'}`}
+            to="help">
+            <FaQuestion />
+            <span className="hidden md:inline">Help</span>
           </NavLink>
         </nav>
         <div className="content overflow-x-scroll">

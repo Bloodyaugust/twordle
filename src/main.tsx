@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './App';
 import Game from './Game/Game';
 import Games from './Games/Games';
+import Help from './Help/Help';
 import './index.css';
 import Profile from './profile/Profile';
 import { Supabase } from './supabase/Supabase';
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
       {
         path: 'game/:gameId',
         element: <Game />,
+      },
+      {
+        path: 'help',
+        element: <Help />,
       },
     ],
   },

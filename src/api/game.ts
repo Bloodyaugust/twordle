@@ -1,4 +1,3 @@
-import { QueryKey } from '@tanstack/react-query';
 import { Database } from '../../lib/database.types';
 import { queryClient } from '../main';
 import { supabase } from '../supabase/Supabase';

@@ -5,6 +5,7 @@ import { Database } from '../../lib/database.types';
 import { mutationCreatePlayer, queryGetPlayers } from '../api/player';
 import { queryGetProfiles } from '../api/profile';
 import Button from '../components/Button';
+import ProfileLink from '../components/ProfileLink';
 import SingleChoice from '../components/SingleChoice';
 import { GameState } from '../game-logic/default-game-reducer';
 import { userContext } from '../user/User';
@@ -66,10 +67,16 @@ export default function GameCard({ game }: Props) {
     navigate(`/twordle/game/${game.game_id}`);
   }, [navigate, game]);
 
+  if (!profiles || !players || !user) {
+    return <span>Loading...</span>;
+  }
+
   return (
     <div className="flex flex-col gap-2 rounded-sm border-2 border-solid p-2">
       <span>Type: {game.type}</span>
-      <span>Host: {profiles?.find(profile => profile.profile_id === game.created_by)?.name}</span>
+      <span>
+        Host: <ProfileLink profile={profiles.find(profile => profile.profile_id === game.created_by)} />
+      </span>
       <span
         className={`${status === 'Pending' && 'text-yellow-500'} ${status === 'In Progress' && 'text-green-500'} ${
           status === 'Ended' && 'text-red-500'
@@ -78,15 +85,16 @@ export default function GameCard({ game }: Props) {
       </span>
       <span>Other Players:</span>
       <div className="flex gap-2">
-        {gamePlayers?.map(player => (
-          <span key={player.player_id}>
-            {
-              profiles?.find(
+        {gamePlayers
+          ?.filter(player => player.player_id !== game.created_by)
+          .map(player => (
+            <ProfileLink
+              key={player.player_id}
+              profile={profiles.find(
                 profile => profile.profile_id === player.player_id && profile.profile_id !== game.created_by
-              )?.name
-            }
-          </span>
-        ))}
+              )}
+            />
+          ))}
       </div>
       <div className="flex gap-2">
         {game.created_by === user?.profile_id && invitableProfiles && (

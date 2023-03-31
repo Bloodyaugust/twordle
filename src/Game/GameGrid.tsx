@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { useContext, useMemo } from 'react';
 import { queryGetProfiles } from '../api/profile';
+import ProfileLink from '../components/ProfileLink';
 import { GameState } from '../game-logic/default-game-reducer';
 import { userContext } from '../user/User';
 import './GameGrid.css';
@@ -65,7 +66,7 @@ export default function GameGrid({ game, focusPlayer }: Props) {
       {sortedPlayers.map((player, playerIndex) => (
         <div key={player} className={`flex flex-col gap-2 ${playerIndex > 0 && 'md:scale-75'}`}>
           <span>
-            {profiles.find(profile => profile.profile_id === player)?.name}
+            <ProfileLink profile={profiles.find(profile => profile.profile_id === player)} />
             {player === user?.profile_id ? ' (You)' : ''}
           </span>
           <div key={player} className="game-grid-inner grid grid-flow-row-dense gap-2">

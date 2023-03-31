@@ -1,3 +1,4 @@
+import { QueryKey } from '@tanstack/react-query';
 import { Database } from '../../lib/database.types';
 import { queryClient } from '../main';
 import { supabase } from '../supabase/Supabase';
@@ -16,6 +17,29 @@ export const queryGetGames = {
   queryKey: ['games'],
   queryFn: getGames,
 };
+
+export async function getUserGames({ queryKey }: any) {
+  const [, { user }] = queryKey;
+  if (!user) {
+    return [];
+  }
+
+  const { data: games, error } = await supabase
+    .from('game')
+    .select('*, player!inner(player_id)')
+    .eq('player.player_id', user.profile_id);
+
+  if (error) {
+    throw error;
+  }
+
+  return games;
+}
+
+export const queryGetUserGames = (user?: Database['public']['Tables']['profile']['Row']) => ({
+  queryKey: ['user-games', { user }],
+  queryFn: getUserGames,
+});
 
 export async function createGame(user: Database['public']['Tables']['profile']['Row']) {
   const { error } = await supabase.from('game').insert([

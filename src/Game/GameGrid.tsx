@@ -63,7 +63,7 @@ export default function GameGrid({ game, focusPlayer }: Props) {
   return (
     <div className="flex flex-col flex-col-reverse gap-4 md:flex-row">
       {sortedPlayers.map((player, playerIndex) => (
-        <div key={player} className={`flex flex-col gap-2 ${playerIndex > 0 && 'scale-90'}`}>
+        <div key={player} className={`flex flex-col gap-2 ${playerIndex > 0 && 'md:scale-75'}`}>
           <span>
             {profiles.find(profile => profile.profile_id === player)?.name}
             {player === user?.profile_id ? ' (You)' : ''}

@@ -19,7 +19,7 @@ import { userContext } from '../user/User';
 import { WORDS } from '../../lib/dictionary';
 import GameGrid from './GameGrid';
 import { supabase } from '../supabase/Supabase';
-import Keyboard from '../Keyboard/Keyboard';
+import Keyboard, { CHARACTER_MAP_STRINGS, INT_CHARACTER_MAP } from '../Keyboard/Keyboard';
 
 export default function Game() {
   const { gameId } = useParams();
@@ -109,12 +109,22 @@ export default function Game() {
 
   const onKeyboardClick = useCallback(
     (character: string) => {
+      console.log(
+        character,
+        CHARACTER_MAP_STRINGS[INT_CHARACTER_MAP.ENTER],
+        character === CHARACTER_MAP_STRINGS[INT_CHARACTER_MAP.ENTER]
+      );
+      if (character === CHARACTER_MAP_STRINGS[INT_CHARACTER_MAP.ENTER]) {
+        onGuess();
+        return;
+      }
+
       if (guessWordInputRef.current && guessWordInputRef.current.value.length < 5) {
         guessWordInputRef.current.value = guessWordInputRef.current.value + character;
         guessWordInputRef.current.focus();
       }
     },
-    [guessWordInputRef]
+    [guessWordInputRef, onGuess]
   );
 
   useEffect(() => {
@@ -170,11 +180,10 @@ export default function Game() {
 
   if (!gameOver) {
     return (
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col items-center gap-4">
         <GameGrid game={gameState} />
         {userGuessing && (
           <>
-            <span>Please make your next guess:</span>
             <Input
               id="word-guess"
               placeholder="a five letter word"
@@ -184,7 +193,6 @@ export default function Game() {
               uppercase
             />
             <Keyboard gameState={gameState} onClick={onKeyboardClick} />
-            <Button onClick={onGuess}>Guess</Button>
           </>
         )}
         {!userGuessing && <span>Waiting for opponent to finish guessing...</span>}

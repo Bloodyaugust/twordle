@@ -50,6 +50,8 @@ export async function createGame(user: Database['public']['Tables']['profile']['
     },
   ]);
 
+  queryClient.invalidateQueries({ queryKey: ['user-games', { user }] });
+
   if (error) {
     throw error;
   }
@@ -65,6 +67,7 @@ export function mutationCreateGame(): mutationCreateGameReturnType {
     mutationFn: createGame,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['games'] });
+      queryClient.invalidateQueries({ queryKey: ['players'] });
     },
   };
 }

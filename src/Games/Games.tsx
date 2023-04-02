@@ -1,7 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import React, { ChangeEvent, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, { ChangeEvent, useCallback, useContext, useMemo, useState } from 'react';
 import { mutationCreateGame, queryGetUserGames } from '../api/game';
-import { mutationCreatePlayer, queryGetPlayers } from '../api/player';
 import Button from '../components/Button';
 import { userContext } from '../user/User';
 import GameCard from './GameCard';
@@ -9,9 +8,7 @@ import GameCard from './GameCard';
 export default function Games() {
   const { user } = useContext(userContext);
   const { isLoading, data: games, error } = useQuery(queryGetUserGames(user));
-  const { data: players } = useQuery(queryGetPlayers);
   const { mutate } = useMutation(mutationCreateGame());
-  const { mutate: createPlayer } = useMutation(mutationCreatePlayer());
   const [showEnded, setShowEnded] = useState(false);
 
   const filteredGames = useMemo(() => {
@@ -36,23 +33,6 @@ export default function Games() {
     },
     [showEnded]
   );
-
-  useEffect(() => {
-    const unjoinedHostedGames = games?.filter(
-      game =>
-        game.created_by === user?.profile_id &&
-        players?.filter(player => player.game_id === game.game_id && player.player_id === user.profile_id).length === 0
-    );
-
-    if (user) {
-      unjoinedHostedGames?.forEach(game => {
-        createPlayer({
-          profileId: user?.profile_id,
-          gameId: game.game_id,
-        });
-      });
-    }
-  }, [games, user]);
 
   if (isLoading) {
     return <span>Loading...</span>;
